@@ -4,8 +4,11 @@ import { join } from "path";
 import { StartConfig } from "../Types/StartConfig";
 import BaseCommand from "./BaseCommand";
 import BaseEvent from "./BaseEvent";
+import CommandManager from "./CommandManager";
 
 export default class CodeFictionistClient extends Client {
+	public commands: CommandManager;
+
 	constructor() {
 		super({
 			intents: Intents.ALL,
@@ -17,6 +20,8 @@ export default class CodeFictionistClient extends Client {
 				],
 			},
 		});
+
+		this.commands = new CommandManager(this);
 	}
 
 	async start(config: StartConfig) {
@@ -37,7 +42,10 @@ export default class CodeFictionistClient extends Client {
 			for(const file of files) {
 				const pseudoPull = await import(join(commandDir, subDir, file));
 				const pull = new pseudoPull.default(this) as BaseCommand;
-				console.log(pull.name);
+
+				this.commands.register(pull.name, pull);
+				pull.aliases.forEach(alias => this.commands.register(pull.name, alias));
+				console.log(`Loaded command: ${pull.name}`);
 			}
 		}
 	}
