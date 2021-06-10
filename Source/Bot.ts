@@ -11,4 +11,5 @@ new CodeFictionistClient()
 		commandDir: join(__dirname, "Commands"),
 		eventDir: join(__dirname, "Events"),
 		prefixes: ["<@731493414683803758>"],
+		devs: [],
 	});

@@ -8,7 +8,7 @@ interface StartConfig {
 		loading?: string,
 		error?: string,
 	},
-	developers: `${bigint}`[],
+	devs: `${bigint}`[],
 };
 
 export { StartConfig };
