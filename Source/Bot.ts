@@ -10,4 +10,5 @@ new CodeFictionistClient()
 		token: process.env.TOKEN,
 		commandDir: join(__dirname, "Commands"),
 		eventDir: join(__dirname, "Events"),
+		prefixes: ["<@731493414683803758>"],
 	});

@@ -8,6 +8,7 @@ import CommandManager from "./CommandManager";
 
 export default class CodeFictionistClient extends Client {
 	public commands: CommandManager;
+	public prefixes: string[] = [];
 
 	constructor() {
 		super({
@@ -25,6 +26,7 @@ export default class CodeFictionistClient extends Client {
 	}
 
 	async start(config: StartConfig) {
+		config.prefixes.forEach(prefix => this.prefixes.push(prefix));
 		// Loads all the events from events Directory
 		await this._loadEvents(config.eventDir);
 		// Loads command from the command Directory

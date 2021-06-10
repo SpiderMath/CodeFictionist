@@ -1,7 +1,6 @@
 import { Message } from "discord.js";
 import BaseEvent from "../Base/BaseEvent";
 import CodeFictionistClient from "../Base/Client";
-const prefix = "`";
 
 export default class MessageEvent extends BaseEvent {
 	constructor(client: CodeFictionistClient) {
@@ -11,7 +10,17 @@ export default class MessageEvent extends BaseEvent {
 	async run(message: Message) {
 		if(message.author.bot) return;
 
-		if(!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
+		let prefix: string;
+
+		for(const pref of this.client.prefixes) {
+			if(message.content.toLowerCase().startsWith(pref.toLowerCase())) {
+				prefix = pref;
+				break;
+			}
+		}
+
+		// @ts-ignore
+		if(!prefix) return;
 
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
 		const commandName = args.shift()?.toLowerCase();
