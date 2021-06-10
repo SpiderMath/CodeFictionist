@@ -10,6 +10,7 @@ interface CommandConfig {
 	devOnly?: boolean,
 	minArgs?: number,
 	permissions?: PermissionResolvable[],
+	nsfw: boolean,
 };
 
 interface Credit {

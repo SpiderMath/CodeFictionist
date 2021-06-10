@@ -2,6 +2,7 @@ import { Client, Collection, Intents, User } from "discord.js";
 import { readdir } from "fs/promises";
 import { join } from "path";
 import { loadEmojis } from "../Helpers/Client/LoadEmojis";
+import { loadDevs } from "../Helpers/Client/LoadDevelopers";
 import { StartConfig } from "../Types/StartConfig";
 import BaseCommand from "./BaseCommand";
 import BaseEvent from "./BaseEvent";
@@ -43,6 +44,7 @@ export default class CodeFictionistClient extends Client {
 
 		this.once("ready", () => {
 			loadEmojis(this, config.emojis);
+			loadDevs(this, config.devs);
 		});
 	}
 
