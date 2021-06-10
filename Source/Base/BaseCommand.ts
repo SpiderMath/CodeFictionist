@@ -1,4 +1,4 @@
-import { PermissionResolvable } from "discord.js";
+import { Message, PermissionResolvable } from "discord.js";
 import { CommandConfig, Credit } from "../Types/CommandConfig";
 import CodeFictionistClient from "./Client";
 
@@ -34,7 +34,8 @@ export default abstract class BaseCommand {
 				this,
 				config,
 			);
-
-
 	}
+
+	// eslint-disable-next-line
+	abstract run(message: Message, args: string[]): Promise<any>;
 };

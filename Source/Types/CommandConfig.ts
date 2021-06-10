@@ -3,13 +3,13 @@ import { PermissionResolvable } from "discord.js";
 interface CommandConfig {
 	name: string,
 	description: string,
-	aliases?: string,
+	aliases?: string[],
 	credits?: Credit[],
 	cooldown?: number,
 	guildOnly?: boolean,
 	devOnly?: boolean,
 	minArgs?: number,
-	permissions: PermissionResolvable[],
+	permissions?: PermissionResolvable[],
 };
 
 interface Credit {

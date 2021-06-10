@@ -7,7 +7,7 @@ import CodeFictionistClient from "./Base/Client";
 
 new CodeFictionistClient()
 	.start({
-		token: process.env.token,
+		token: process.env.TOKEN,
 		commandDir: join(__dirname, "Commands"),
 		eventDir: join(__dirname, "Events"),
 	});

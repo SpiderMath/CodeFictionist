@@ -2,6 +2,8 @@ import { Client, Intents } from "discord.js";
 import { readdir } from "fs/promises";
 import { join } from "path";
 import { StartConfig } from "../Types/StartConfig";
+import BaseCommand from "./BaseCommand";
+import BaseEvent from "./BaseEvent";
 
 export default class CodeFictionistClient extends Client {
 	constructor() {
@@ -34,7 +36,8 @@ export default class CodeFictionistClient extends Client {
 
 			for(const file of files) {
 				const pseudoPull = await import(join(commandDir, subDir, file));
-				const pull = new pseudoPull.default();
+				const pull = new pseudoPull.default(this) as BaseCommand;
+				console.log(pull.name);
 			}
 		}
 	}
@@ -44,7 +47,9 @@ export default class CodeFictionistClient extends Client {
 
 		for(const file of files) {
 			const pseudoPull = await import(join(eventDir, file));
-			const pull = new pseudoPull.default();
+			const pull = new pseudoPull.default(this) as BaseEvent;
+
+			this.on(pull.name, (...args: any[]) => pull.run(...args));
 		}
 	}
 };
