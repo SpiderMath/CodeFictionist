@@ -3,6 +3,11 @@ interface StartConfig {
 	commandDir: string,
 	eventDir: string,
 	prefixes: string[],
+	emojis?: {
+		success?: string,
+		loading?: string,
+		error?: string,
+	}
 };
 
 export { StartConfig };

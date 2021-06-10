@@ -1,6 +1,7 @@
 import { Client, Intents } from "discord.js";
 import { readdir } from "fs/promises";
 import { join } from "path";
+import { loadEmojis } from "../Helpers/Client/LoadEmojis";
 import { StartConfig } from "../Types/StartConfig";
 import BaseCommand from "./BaseCommand";
 import BaseEvent from "./BaseEvent";
@@ -9,6 +10,11 @@ import CommandManager from "./CommandManager";
 export default class CodeFictionistClient extends Client {
 	public commands: CommandManager;
 	public prefixes: string[] = [];
+	public emotes = {
+		success: "✅",
+		error: "❌",
+		loading: "🤔",
+	};
 
 	constructor() {
 		super({
@@ -33,6 +39,10 @@ export default class CodeFictionistClient extends Client {
 		await this._loadCommands(config.commandDir);
 		// Logs the bot in!!!!
 		this.login(config.token);
+
+		this.once("ready", () => {
+			loadEmojis(this, config.emojis);
+		});
 	}
 
 	private async _loadCommands(commandDir: string) {
