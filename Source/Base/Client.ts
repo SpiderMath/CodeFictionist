@@ -1,4 +1,4 @@
-import { Client, Intents } from "discord.js";
+import { Client, Collection, Intents, User } from "discord.js";
 import { readdir } from "fs/promises";
 import { join } from "path";
 import { loadEmojis } from "../Helpers/Client/LoadEmojis";
@@ -15,6 +15,7 @@ export default class CodeFictionistClient extends Client {
 		error: "❌",
 		loading: "🤔",
 	};
+	public devs: Collection<string, User> = new Collection();
 
 	constructor() {
 		super({
