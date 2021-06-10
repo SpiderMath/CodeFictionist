@@ -3,7 +3,7 @@ import { readdir } from "fs/promises";
 import { join } from "path";
 import { StartConfig } from "../Types/StartConfig";
 
-export default class ErisClient extends Client {
+export default class CodeFictionistClient extends Client {
 	constructor() {
 		super({
 			intents: Intents.ALL,

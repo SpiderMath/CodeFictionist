@@ -3,9 +3,9 @@ import { config } from "dotenv";
 import { join } from "path";
 config();
 
-import ErisClient from "./Base/Client";
+import CodeFictionistClient from "./Base/Client";
 
-new ErisClient()
+new CodeFictionistClient()
 	.start({
 		token: process.env.token,
 		commandDir: join(__dirname, "Commands"),
