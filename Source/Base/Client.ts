@@ -64,6 +64,20 @@ export default class CodeFictionistClient extends Client {
 				const pull = new pseudoPull.default(this) as BaseCommand;
 
 				pull.category = categoryMap[subDir] || subDir;
+				pull.credits.push(
+					{
+						name: "SpiderMath",
+						reason: "Code",
+						URL: "https://github.com/SpiderMath",
+						reasonURL: "https://github.com/SpiderMath/CodeFictionist",
+					},
+					{
+						name: "Hasib Al Rashid",
+						reason: "Code",
+						URL: "https://github.com/Hasib-Rashib",
+						reasonURL: "https://github.com/SpiderMath/CodeFictionist",
+					},
+				);
 
 				this.commands.register(pull.name, pull);
 				pull.aliases.forEach(alias => this.commands.register(pull.name, alias));
