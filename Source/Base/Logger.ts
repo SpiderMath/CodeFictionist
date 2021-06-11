@@ -2,6 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 
 export interface Log {
 	type: "success" | "warn" | "info" | "error",
+	id: number,
 	context: string,
 	message: string,
 	timestamp: string,
@@ -28,6 +29,7 @@ export default class Logger {
 
 		freshLogs
 			.push({
+				id: freshLogs.length + 1,
 				type: logType,
 				context,
 				message,
