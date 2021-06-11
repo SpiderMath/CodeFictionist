@@ -11,5 +11,9 @@ new CodeFictionistClient()
 		commandDir: join(__dirname, "Commands"),
 		eventDir: join(__dirname, "Events"),
 		prefixes: ["<@731493414683803758>"],
-		devs: [],
+		devs: [
+			`${BigInt("839367177899737108")}`,
+			`${BigInt("548038495617417226")}`,
+			`${BigInt("737197341693706291")}`,
+		],
 	});

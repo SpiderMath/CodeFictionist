@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 
-interface Log {
+export interface Log {
 	type: "success" | "warn" | "info" | "error",
 	context: string,
 	message: string,
