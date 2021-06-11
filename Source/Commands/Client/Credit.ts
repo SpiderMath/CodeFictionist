@@ -15,21 +15,12 @@ export default class CreditCommand extends BaseCommand {
 	async run(message: Message, args: string[]) {
 		const command = this.client.commands.get(args[0]);
 		if(!command) return message.channel.send(`${this.client.emotes.error} Couldn't find ${args[0]}`);
+		const credits = command.credits.map((credit, index) => `${index}. ${credit.URL ? `[${credit.name}](${credit.URL})` : `${credit.name}`} (${credit.reasonURL ? `${credit.reason}` : `[${credit.reason}](${credit.reasonURL})`})`).join("\n");
 
 		const creditsEmbed = this.client.embed(message.author)
 			.setTitle(`Credits for ${command.name}`)
-			.setDescription((await this.getDescription(command)) || "You did something wrong");
+			.setDescription(credits);
 
-		message.channel.send(creditsEmbed);
-	}
-
-	async getDescription(command: BaseCommand) {
-		const credits = command.credits;
-		let description = "";
-		for(const credit of credits) {
-			description += `${credit.URL ? `[${credit.name}](${credit.URL})` : `${credit.name}`} (${credit.reasonURL ? `${credit.reason}` : `[${credit.reason}](${credit.reasonURL})`})`;
-		}
-
-		return description;
+		this.client.sendEmbed(message, creditsEmbed);
 	}
 };
