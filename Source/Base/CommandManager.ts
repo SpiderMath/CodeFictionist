@@ -12,7 +12,7 @@ export default class CommandManager {
 	}
 
 	public register(name: string, input: BaseCommand | string) {
-		if(typeof input === "string") this.aliases.set(name.toLowerCase(), input.toLowerCase());
+		if(typeof input === "string") this.aliases.set(input.toLowerCase(), name.toLowerCase());
 		else if(input instanceof BaseCommand) this.cache.set(name.toLowerCase(), input);
 		else throw new TypeError("Expected BaseCommand | string, received something else...");
 
