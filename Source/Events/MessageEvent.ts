@@ -1,6 +1,8 @@
-import { Message } from "discord.js";
+import { Collection, Message } from "discord.js";
 import BaseEvent from "../Base/BaseEvent";
 import CodeFictionistClient from "../Base/Client";
+
+const cooldowns: Collection<string, number> = new Collection();
 
 export default class MessageEvent extends BaseEvent {
 	constructor(client: CodeFictionistClient) {
@@ -29,6 +31,27 @@ export default class MessageEvent extends BaseEvent {
 		const command = this.client.commands.get(commandName);
 
 		if(!command) return;
+
+		if(command.guildOnly && !message.guild) return message.channel.send(`${this.client.emotes.error} This command can only be run in a server`);
+
+		// @ts-ignore
+		if(command.nsfw) if(!message.guild || !message.channel.nsfw) return message.channel.send(`${this.client.emotes.error} This command can only be run in a NSFW Channel`);
+
+		if(command.devOnly && !this.client.devs.has(message.author.id)) return message.channel.send(`${this.client.emotes.error} This command is developer only.`);
+
+		if(command.minArgs !== 0 && !args[command.minArgs - 1]) return message.channel.send(`${this.client.emotes.error} Expected ${command.minArgs} arguments, received ${args.length}`);
+
+		const now = Date.now();
+		const timestamp = cooldowns.get(`${message.author.id}-${command.name}`);
+
+		if(timestamp) {
+			const timeElapsed = timestamp - now;
+
+			if(timeElapsed < (command.cooldown * 1000)) return message.channel.send(`${this.client.emotes.error} Please wait for ${(timeElapsed / 1000).toFixed(2)} seconds before trying \`${command.name}\` again.`);
+		}
+
+		cooldowns.set(`${message.author.id}-${command.name}`, now);
+		setTimeout(() => cooldowns.delete(`${message.author.id}-${command.name}`), command.cooldown * 1000);
 
 		try {
 			await command.run(message, args);
