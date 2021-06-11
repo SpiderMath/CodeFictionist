@@ -19,15 +19,15 @@ export default class FetchLogsCommand extends BaseCommand {
 	async run(message: Message, args: string[]) {
 		if(args[0] && !Number(args[0])) return message.channel.send(`${this.client.emotes.error} Log count has to be a number`);
 		const logCount = Number(args[0]) || 5;
-		const logs = (this.client.loadJSON(join(__dirname, "../../../Server/Logs.json")) as Log[]).reverse().slice(0, logCount).reverse();
+		const logs = (this.client.loadJSON(join(__dirname, "../../../Server/Logs.json")) as Log[]).sort((a, b) => b.id - a.id).slice(0, logCount).reverse();
 
 		const logsEmbed = this.client.embed(message.author)
 			.setTitle("Bot Logs")
 			.setDescription(
 				logs
-					.map((log, index) => {
+					.map((log) => {
 						return stripIndents`
-							・**ID:** ${index + 1}
+							・**ID:** ${log.id}
 							**Context:** ${log.context}
 							**Message:** ${log.message.length > 20 ? `${log.message.slice(0, 20)}..` : log.message}
 						`;
