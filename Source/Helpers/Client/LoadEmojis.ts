@@ -10,5 +10,7 @@ export function loadEmojis(client: CodeFictionistClient, emojis?: object) {
 
 		// @ts-ignore
 		client.emotes[entry[0]] = emoji;
+
+		client.logger.success("client/emotes", `Loaded custom emote ${emoji.name}`);
 	}
 };

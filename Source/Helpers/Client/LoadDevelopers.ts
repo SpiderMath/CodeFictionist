@@ -7,5 +7,6 @@ export function loadDevs(client: CodeFictionistClient, devIDs: `${bigint}`[]) {
 		if(!user) throw new Error(`Dev ID: ${ID} is Invalid`);
 
 		client.devs.set(ID, user);
+		client.logger.success("client/devs", `Added ${user.tag} as a developer`);
 	}
 }
