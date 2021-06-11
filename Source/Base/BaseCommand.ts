@@ -13,7 +13,8 @@ export default abstract class BaseCommand {
 	public devOnly: boolean = true;
 	public cooldown: number = 3;
 	public minArgs: number = 0;
-	public permissions: PermissionResolvable[] = [];
+	public clientPermissions: PermissionResolvable[] = [];
+	public userPermissions: PermissionResolvable[] = [];
 	public aliases: string[] = [];
 	public nsfw: boolean = false;
 	public category: string = "";

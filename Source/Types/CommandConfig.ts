@@ -9,7 +9,8 @@ interface CommandConfig {
 	guildOnly?: boolean,
 	devOnly?: boolean,
 	minArgs?: number,
-	permissions?: PermissionResolvable[],
+	clientPermissions?: PermissionResolvable[],
+	userPermissions?: PermissionResolvable[],
 	nsfw?: boolean,
 };
 

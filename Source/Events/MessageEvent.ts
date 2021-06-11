@@ -1,4 +1,4 @@
-import { Collection, Message } from "discord.js";
+import { Collection, Message, TextChannel } from "discord.js";
 import BaseEvent from "../Base/BaseEvent";
 import CodeFictionistClient from "../Base/Client";
 
@@ -40,6 +40,23 @@ export default class MessageEvent extends BaseEvent {
 		if(command.devOnly && !this.client.devs.has(message.author.id)) return message.channel.send(`${this.client.emotes.error} This command is developer only.`);
 
 		if(command.minArgs !== 0 && !args[command.minArgs - 1]) return message.channel.send(`${this.client.emotes.error} Expected ${command.minArgs} arguments, received ${args.length}`);
+
+		for(const perm of command.clientPermissions) {
+			if(!message.guild) break;
+
+			// @ts-ignore
+			const permissions = (message.channel as TextChannel).permissionsFor(message.guild.me);
+
+			if(!permissions.has(perm)) return message.channel.send(`${this.client.emotes.error} The bot is missing the permission ${perm} to run this command!`);
+		}
+
+		for(const perm of command.userPermissions) {
+			if(!message.guild) break;
+
+			const permissions = (message.channel as TextChannel).permissionsFor(message.author);
+
+			if(!permissions?.has(perm)) return message.channel.send(`${this.client.emotes.error} You need ${perm} permission to execute this command!`);
+		}
 
 		const now = Date.now();
 		const timestamp = cooldowns.get(`${message.author.id}-${command.name}`);
