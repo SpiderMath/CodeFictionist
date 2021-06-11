@@ -22,7 +22,7 @@ export default class MessageEvent extends BaseEvent {
 		// @ts-ignore
 		if(!prefix) return;
 
-const args = message.content.slice(prefix.length).trim().split(/ +/g);
+		const args = message.content.slice(prefix.length).trim().split(/ +/g);
 		const commandName = args.shift()?.toLowerCase();
 
 		// @ts-ignore
