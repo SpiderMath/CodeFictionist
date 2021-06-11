@@ -7,6 +7,7 @@ import { StartConfig } from "../Types/StartConfig";
 import BaseCommand from "./BaseCommand";
 import BaseEvent from "./BaseEvent";
 import CommandManager from "./CommandManager";
+import Logger from "./Logger";
 
 export default class CodeFictionistClient extends Client {
 	public commands: CommandManager;
@@ -17,6 +18,7 @@ export default class CodeFictionistClient extends Client {
 		loading: "🤔",
 	};
 	public devs: Collection<string, User> = new Collection();
+	public logger = new Logger(join(__dirname, "../../Server/Logs.json"));
 
 	constructor() {
 		super({
@@ -53,6 +55,7 @@ export default class CodeFictionistClient extends Client {
 
 		for(const subDir of subDirs) {
 			const files = await readdir(join(commandDir, subDir));
+			this.logger.info("client/commands", `Loading subdirectory ${subDir}`);
 
 			for(const file of files) {
 				const pseudoPull = await import(join(commandDir, subDir, file));
@@ -60,7 +63,8 @@ export default class CodeFictionistClient extends Client {
 
 				this.commands.register(pull.name, pull);
 				pull.aliases.forEach(alias => this.commands.register(pull.name, alias));
-				console.log(`Loaded command: ${pull.name}`);
+
+				this.logger.success("client/commands", `Loaded command ${pull.name} 💪`);
 			}
 		}
 	}
@@ -73,6 +77,8 @@ export default class CodeFictionistClient extends Client {
 			const pull = new pseudoPull.default(this) as BaseEvent;
 
 			this.on(pull.name, (...args: any[]) => pull.run(...args));
+
+			this.logger.success("client/events", `Listening for event: ${pull.name} 👂`);
 		}
 	}
 };
