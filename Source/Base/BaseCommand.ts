@@ -16,6 +16,7 @@ export default abstract class BaseCommand {
 	public permissions: PermissionResolvable[] = [];
 	public aliases: string[] = [];
 	public nsfw: boolean = false;
+	public category: string = "";
 
 	constructor(client: CodeFictionistClient, config: CommandConfig) {
 		this.client = client;

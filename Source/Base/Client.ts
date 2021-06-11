@@ -8,6 +8,7 @@ import BaseCommand from "./BaseCommand";
 import BaseEvent from "./BaseEvent";
 import CommandManager from "./CommandManager";
 import Logger from "./Logger";
+import { existsSync, readFileSync } from "fs";
 
 export default class CodeFictionistClient extends Client {
 	public commands: CommandManager;
@@ -52,6 +53,7 @@ export default class CodeFictionistClient extends Client {
 
 	private async _loadCommands(commandDir: string) {
 		const subDirs = await readdir(commandDir);
+		const categoryMap = this.loadJSON(join(__dirname, "../../Assets/JSON/categoryMap.json"));
 
 		for(const subDir of subDirs) {
 			const files = await readdir(join(commandDir, subDir));
@@ -60,6 +62,8 @@ export default class CodeFictionistClient extends Client {
 			for(const file of files) {
 				const pseudoPull = await import(join(commandDir, subDir, file));
 				const pull = new pseudoPull.default(this) as BaseCommand;
+
+				pull.category = categoryMap[subDir] || subDir;
 
 				this.commands.register(pull.name, pull);
 				pull.aliases.forEach(alias => this.commands.register(pull.name, alias));
@@ -80,5 +84,14 @@ export default class CodeFictionistClient extends Client {
 
 			this.logger.success("client/events", `Listening for event: ${pull.name} 👂`);
 		}
+	}
+
+	public loadJSON(pathToJSON: string) {
+		if(!existsSync(pathToJSON)) throw new Error("Invalid path provided");
+
+		const data = readFileSync(pathToJSON);
+		const parsed = JSON.parse(data.toString());
+
+		return parsed;
 	}
 };
