@@ -63,7 +63,7 @@ export default class CodeFictionistClient extends Client {
 				const pseudoPull = await import(join(commandDir, subDir, file));
 				const pull = new pseudoPull.default(this) as BaseCommand;
 
-				pull.category = categoryMap[subDir] || subDir;
+				pull.category = categoryMap[subDir.toLowerCase()] || subDir;
 				pull.credits.push(
 					{
 						name: "SpiderMath",
