@@ -1,4 +1,4 @@
-import { Client, Collection, Intents, User } from "discord.js";
+import { Client, Collection, ColorResolvable, Intents, MessageEmbed, User } from "discord.js";
 import { readdir } from "fs/promises";
 import { join } from "path";
 import { loadEmojis } from "../Helpers/Client/LoadEmojis";
@@ -93,5 +93,12 @@ export default class CodeFictionistClient extends Client {
 		const parsed = JSON.parse(data.toString());
 
 		return parsed;
+	}
+
+	public embed(author: User, colour?: ColorResolvable) {
+		return new MessageEmbed()
+			.setTimestamp()
+			.setColor(colour || "GREEN")
+			.setAuthor(author.tag, author.displayAvatarURL({ dynamic: true }));
 	}
 };
