@@ -24,7 +24,7 @@ export default class MemberCount extends BaseCommand {
 				**${message.guild?.members.cache.filter(o => o.presence.status === "online").size}** Online
 				**${message.guild?.members.cache.filter(i => i.presence.status === "idle").size}** Inactive
 				**${message.guild?.members.cache.filter(dnd => dnd.presence.status === "dnd").size}** Do Not Disturb
-				**${message.guild?.members.cache.filter(off => off.presence.status === "offline").size}/ ${message.guild?.members.cache.filter(s => s.presence.status === "invisible").size}** Offline/ Invisible
+				**${message.guild?.members.cache.filter(off => off.presence.status === "offline").size}** Offline/ Invisible
 				`);
 
 		message.channel.send({ embed: embed });
