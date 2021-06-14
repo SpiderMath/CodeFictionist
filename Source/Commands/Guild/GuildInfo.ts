@@ -31,9 +31,8 @@ export default class ServerInfo extends BaseCommand {
 			// @ts-ignore
 			.addField("Boosters ", `${message.guild?.premiumSubscriptionCount}`, true)
 			.addField("Roles ", `${message.guild?.roles.cache.size}`, true)
-			.addField("Channels ", `${message.guild?.channels.cache.size}`, true)
-			.addField("Text Channels ", `${message.guild?.channels.cache.filter(r => r.type === "text").size}`, true)
-			.addField("Voice Channels ", `${message.guild?.channels.cache.filter(c => c.type === "voice").size}`, true)
+			.addField("Text Channels ", `${message.guild?.channels.cache.filter(ch => (ch.type === "text") || (ch.type === "news") || (ch.type === "store")).size}`, true)
+			.addField("Voice Channels ", `${message.guild?.channels.cache.filter(ch => (ch.type === "voice") || (ch.type === "stage")).size}`, true)
 			.addField("Emojis ", `${message.guild?.emojis.cache.size}`, true);
 
 		this.client.sendEmbed(message, serverInfoEmbed);
