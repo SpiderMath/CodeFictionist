@@ -21,7 +21,10 @@ export default class ServerInfo extends BaseCommand {
 			.addField("ID ", `${message.guild?.id}`, true)
 			.addField("Created At ", `${message.guild?.createdAt.toLocaleDateString("en-us")} ${message.guild?.createdAt.toLocaleTimeString("en-us")}`)
 			.addField("Region ", "India", true)
-			.addField("Verification Level ", `${message.guild?.verificationLevel}`, true)
+			.addField("Verification Level ", `${message.guild?.verificationLevel.split("").map((str, position) => {
+				if(position === 0) return str.toUpperCase();
+				else return str.toLowerCase();
+			}).join("")}`, true)
 			.addField("Total Members ", `${message.guild?.memberCount}`, true)
 			.addField("Online Members ", `${message.guild?.members.cache.filter(m => m.user.presence.status == "online").size}`, true)
 			.addField("Bots ", `${message.guild?.members.cache.filter(m => m.user.bot).size}`, true)
