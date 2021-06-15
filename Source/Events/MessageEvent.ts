@@ -12,6 +12,8 @@ export default class MessageEvent extends BaseEvent {
 	async run(message: Message) {
 		if(message.author.bot) return;
 
+		if(!message.guild) return;
+
 		let prefix: string;
 
 		for(const pref of this.client.prefixes) {
@@ -39,18 +41,14 @@ export default class MessageEvent extends BaseEvent {
 
 		if(!command) return;
 
-		if(command.guildOnly && !message.guild) return message.channel.send(`${this.client.emotes.error} This command can only be run in a server`);
-
 		// @ts-ignore
-		if(command.nsfw) if(!message.guild || !message.channel.nsfw) return message.channel.send(`${this.client.emotes.error} This command can only be run in a NSFW Channel`);
+		if(command.nsfw && !message.channel.nsfw) return message.channel.send(`${this.client.emotes.error} This command can only be run in a NSFW Channel`);
 
 		if(command.devOnly && !this.client.devs.has(message.author.id)) return message.channel.send(`${this.client.emotes.error} This command is developer only.`);
 
 		if(command.minArgs !== 0 && !args[command.minArgs - 1]) return message.channel.send(`${this.client.emotes.error} Expected ${command.minArgs} arguments, received ${args.length}`);
 
 		for(const perm of command.clientPermissions) {
-			if(!message.guild) break;
-
 			// @ts-ignore
 			const permissions = (message.channel as TextChannel).permissionsFor(message.guild.me);
 
@@ -58,8 +56,6 @@ export default class MessageEvent extends BaseEvent {
 		}
 
 		for(const perm of command.userPermissions) {
-			if(!message.guild) break;
-
 			const permissions = (message.channel as TextChannel).permissionsFor(message.author);
 
 			if(!permissions?.has(perm)) return message.channel.send(`${this.client.emotes.error} You need ${perm} permission to execute this command!`);

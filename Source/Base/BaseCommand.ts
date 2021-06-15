@@ -9,7 +9,6 @@ export default abstract class BaseCommand {
 	// @ts-ignore
 	public description: string;
 	public credits: Credit[] = [];
-	public guildOnly: boolean = true;
 	public devOnly: boolean = true;
 	public cooldown: number = 3;
 	public minArgs: number = 0;

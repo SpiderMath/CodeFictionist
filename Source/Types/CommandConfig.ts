@@ -6,7 +6,6 @@ interface CommandConfig {
 	aliases?: string[],
 	credits?: Credit[],
 	cooldown?: number,
-	guildOnly?: boolean,
 	devOnly?: boolean,
 	minArgs?: number,
 	clientPermissions?: PermissionResolvable[],

@@ -1,6 +1,6 @@
 {
   "name": "erisbot",
-  "version": "0.0.0",
+  "version": "1.0.3",
   "description": "Community Bot for CodeFiction",
   "scripts": {
     "dev": "npx ts-node-dev ./Source/Bot",
