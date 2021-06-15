@@ -2,6 +2,7 @@ import { stripIndents } from "common-tags";
 import { Guild, Message } from "discord.js";
 import BaseCommand from "../../Base/BaseCommand";
 import CodeFictionistClient from "../../Base/Client";
+import { firstUpperCase } from "../../Helpers/Text/FirstUpperCase";
 
 export default class ServerInfo extends BaseCommand {
 	constructor(client: CodeFictionistClient) {
@@ -22,11 +23,8 @@ export default class ServerInfo extends BaseCommand {
 			.addField("Owner", `<@!${guild.ownerID}>`, true)
 			.addField("ID", `${guild.id}`, true)
 			.addField("Created At", `${guild.createdAt.toLocaleDateString("en-us")} ${guild.createdAt.toLocaleTimeString("en-us")}`)
-			.addField("Region", guild.region, true)
-			.addField("Verification Level", `${guild.verificationLevel.split("").map((str, position) => {
-				if(position === 0) return str.toUpperCase();
-				else return str.toLowerCase();
-			}).join("")}`, true)
+			.addField("Region", firstUpperCase(guild.region), true)
+			.addField("Verification Level", firstUpperCase(guild.verificationLevel), true)
 			.addField("Total Members", `${guild.memberCount}`, true)
 			.addField("Bots", `${guild.members.cache.filter(m => m.user.bot).size || 0}`, true)
 			.addField("Boosters", `${guild.premiumSubscriptionCount || 0}`, true)
