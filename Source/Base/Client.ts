@@ -139,13 +139,45 @@ export default class CodeFictionistClient extends Client {
 				// @ts-ignore
 				member = cache?.filter(m => (m.user.id === input) || (new RegExp(input, "ig").test(m.user.tag) || (new RegExp(input, "ig").test(m.nickname || "")))).first();
 			}
-			if(!member && throwErrorOnNoResults && input) {throw new Error("Not found");}
-			else if(!member) {
+			if(!member && throwErrorOnNoResults && input) {
+				throw new Error("Not found");
+			}
+
+			if(!member) {
 				member = message.member;
-				console.log("e");
 			}
 		}
 
 		return member as GuildMember;
+	}
+
+	public getUser(message: Message, input: string | undefined, throwErrorOnNoResults: boolean = false, inputOutOfRangeError: boolean = false): User | null {
+		let member: unknown = message.mentions.users?.first();
+		const cache = this.users.cache;
+
+		if(!member) {
+			if(input) {
+				if(input.length > 32) {
+					if(inputOutOfRangeError) throw new Error("Input is too large");
+					else return null;
+				}
+
+				input = input.split("").map(letter => {
+					if(["*", "\\", "{", "}", "[", "]", "^", "$", ".", "|", "(", ")", "+"].includes(letter)) return `\\${letter}`;
+					return letter;
+				}).join("");
+
+				// @ts-ignore
+				member = cache?.filter(m => (m.id === input) || (new RegExp(input, "ig").test(m.tag))).first();
+			}
+			if(!member && throwErrorOnNoResults && input) {
+				throw new Error("Not found");
+			}
+			if(!member) {
+				member = message.member;
+			}
+		}
+
+		return member as User;
 	}
 };
