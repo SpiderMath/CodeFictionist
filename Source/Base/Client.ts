@@ -1,4 +1,4 @@
-import { Client, Collection, ColorResolvable, Intents, Message, MessageEmbed, User } from "discord.js";
+import { Client, Collection, ColorResolvable, GuildMember, Intents, Message, MessageEmbed, User } from "discord.js";
 import { readdir } from "fs/promises";
 import { join } from "path";
 import { loadEmojis } from "../Helpers/Client/LoadEmojis";
@@ -118,5 +118,34 @@ export default class CodeFictionistClient extends Client {
 
 	public sendEmbed(message: Message, embed: MessageEmbed) {
 		message.channel.send({ embed });
+	}
+
+	public getMember(message: Message, input: string | undefined, throwErrorOnNoResults: boolean = false, inputOutOfRangeError: boolean = false): GuildMember | null {
+		let member: unknown = message.mentions.members?.first();
+		const cache = message.guild?.members.cache;
+
+		if(!member) {
+			if(input) {
+				if(input.length > 32) {
+					if(inputOutOfRangeError) throw new Error("Input is too large");
+					else return null;
+				}
+
+				input = input.split("").map(letter => {
+					if(["*", "\\", "{", "}", "[", "]", "^", "$", ".", "|", "(", ")", "+"].includes(letter)) return `\\${letter}`;
+					return letter;
+				}).join("");
+
+				// @ts-ignore
+				member = cache?.filter(m => (m.user.id === input) || (new RegExp(input, "ig").test(m.user.tag) || (new RegExp(input, "ig").test(m.nickname || "")))).first();
+			}
+			if(!member && throwErrorOnNoResults && input) {throw new Error("Not found");}
+			else if(!member) {
+				member = message.member;
+				console.log("e");
+			}
+		}
+
+		return member as GuildMember;
 	}
 };
