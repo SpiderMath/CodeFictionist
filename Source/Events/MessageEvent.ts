@@ -23,6 +23,13 @@ export default class MessageEvent extends BaseEvent {
 
 		// @ts-ignore
 		if(!prefix) return;
+		// @ts-ignore
+		if(prefix.includes(this.client.user?.id)) {
+			// @ts-ignore
+			message.mentions.users.delete(message.mentions.users.first().id);
+			// @ts-ignore
+			message.mentions.members.delete(message.mentions.members.first().id);
+		}
 
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
 		const commandName = args.shift()?.toLowerCase();
