@@ -27,10 +27,10 @@ export default class MessageEvent extends BaseEvent {
 		if(!prefix) return;
 		// @ts-ignore
 		if(prefix.includes(this.client.user?.id)) {
-			// @ts-ignore
-			message.mentions.users.delete(message.mentions.users.first().id);
-			// @ts-ignore
-			message.mentions.members.delete(message.mentions.members.first().id);
+			if(message.mentions.users.first() === this.client.user) {
+				// @ts-ignore
+				message.mentions.users.delete(message.mentions.users.first().id);
+			}
 		}
 
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -77,7 +77,7 @@ export default class MessageEvent extends BaseEvent {
 			await command.run(message, args);
 		}
 		catch(err) {
-			console.log("something happened");
+			this.client.logger.error("client/commands", err.message, err.stack);
 		}
 	}
 };
