@@ -13,7 +13,7 @@ export default class MemberCount extends BaseCommand {
 		});
 	}
 	async run(message: Message) {
-		const embed = this.client.embed(message.author)
+		const memberCountEmbed = this.client.embed(message.author)
 			.setTitle("**Member Count**")
 			// @ts-ignore
 			.setThumbnail(message.guild?.iconURL({ dynamic: true }))
@@ -27,7 +27,6 @@ export default class MemberCount extends BaseCommand {
 				**${message.guild?.members.cache.filter(off => off.presence.status === "offline").size}** Offline/ Invisible
 				`);
 
-		message.channel.send({ embed: embed });
-		this.client.embed(message.author);
+		this.client.sendEmbed(message, memberCountEmbed);
 	}
 }
