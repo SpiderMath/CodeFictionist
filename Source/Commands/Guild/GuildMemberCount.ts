@@ -1,5 +1,5 @@
 import { stripIndents } from "common-tags";
-import { Message } from "discord.js";
+import { Guild, Message } from "discord.js";
 import BaseCommand from "../../Base/BaseCommand";
 import CodeFictionistClient from "../../Base/Client";
 
@@ -13,19 +13,22 @@ export default class MemberCount extends BaseCommand {
 		});
 	}
 	async run(message: Message) {
+		// @ts-ignore
+		const guild: Guild = message.guild;
+
 		const memberCountEmbed = this.client.embed(message.author)
-			.setTitle("**Member Count**")
-			// @ts-ignore
-			.setThumbnail(message.guild?.iconURL({ dynamic: true }))
-			.addField("Members", `**${message.guild?.memberCount}**`, true)
-			.addField("Humans", `**${message.guild?.members.cache.filter(member => !member.user.bot).size}**`, true)
+			.setTitle(guild.name)
+			.addField("Members", `**${guild.memberCount}**`, true)
+			.addField("Humans", `**${guild.members.cache.filter(member => !member.user.bot).size}**`, true)
 			.addField("Bots", `**${message.guild?.members.cache.filter(member => member.user.bot).size}**`, true)
 			.addField("Member Status", stripIndents`
-				**${message.guild?.members.cache.filter(o => o.presence.status === "online").size}** Online
-				**${message.guild?.members.cache.filter(i => i.presence.status === "idle").size}** Inactive
-				**${message.guild?.members.cache.filter(dnd => dnd.presence.status === "dnd").size}** Do Not Disturb
-				**${message.guild?.members.cache.filter(off => off.presence.status === "offline").size}** Offline/ Invisible
+				**${guild.members.cache.filter(o => o.presence.status === "online").size}** Online
+				**${guild.members.cache.filter(i => i.presence.status === "idle").size}** Inactive
+				**${guild.members.cache.filter(dnd => dnd.presence.status === "dnd").size}** Do Not Disturb
+				**${guild.members.cache.filter(off => off.presence.status === "offline").size}** Offline/ Invisible
 				`);
+
+		if(guild.iconURL()) memberCountEmbed.setThumbnail(`${guild.iconURL()}`);
 
 		this.client.sendEmbed(message, memberCountEmbed);
 	}
