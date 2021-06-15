@@ -9,7 +9,6 @@ export default class MemberCount extends BaseCommand {
 			name: "membercount",
 			description: "Get's the number of member of CodeFiction",
 			aliases: ["users", "members", "member-count"],
-			guildOnly: true,
 		});
 	}
 	async run(message: Message) {

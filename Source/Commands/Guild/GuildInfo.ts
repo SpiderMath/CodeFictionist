@@ -10,7 +10,6 @@ export default class ServerInfo extends BaseCommand {
 			name: "server-info",
 			aliases: ["serverinfo", "server", "serverstats"],
 			description: "Gets the info of the server",
-			guildOnly: true,
 		});
 	}
 	async run(message: Message) {

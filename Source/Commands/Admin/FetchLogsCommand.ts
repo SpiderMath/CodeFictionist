@@ -12,7 +12,6 @@ export default class FetchLogsCommand extends BaseCommand {
 			description: "Fetches the logs for the bot",
 			aliases: ["fetch-logs"],
 			devOnly: true,
-			guildOnly: true,
 		});
 	}
 
