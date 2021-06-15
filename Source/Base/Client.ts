@@ -72,9 +72,9 @@ export default class CodeFictionistClient extends Client {
 						reasonURL: "https://github.com/SpiderMath/CodeFictionist",
 					},
 					{
-						name: "Hasib Al Rashid",
+						name: "Dr. Time",
 						reason: "Code",
-						URL: "https://github.com/Hasib-Rashib",
+						URL: "https://github.com/Rubayz",
 						reasonURL: "https://github.com/SpiderMath/CodeFictionist",
 					},
 				);
